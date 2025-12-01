@@ -1,4 +1,3 @@
-
 services:
   db:
     image: mysql:8.0
@@ -14,7 +13,7 @@ services:
       - db_data:/var/lib/mysql
 
   web:
-    image: "ashutosh476/notes-app:latest"
+    image: notes-app:latest
     restart: always
     depends_on:
       - db
