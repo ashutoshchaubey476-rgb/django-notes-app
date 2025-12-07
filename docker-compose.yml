@@ -1,31 +1,29 @@
-services:
-  db:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: notesdb
-      MYSQL_USER: notesuser
-      MYSQL_PASSWORD: notespwd
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-
-  web:
-    image: notes-app:latest
-    restart: always
-    depends_on:
-      - db
-    ports:
-      - "8000:8000"
-    environment:
-      DB_HOST: db
-      DB_NAME: notesdb
-      DB_USER: notesuser
-      DB_PASSWORD: notespwd
-    working_dir: /app/backend
-    command: python manage.py runserver 0.0.0.0:8000
-
-volumes:
-  db_data:
+@Library('Shared')_
+pipeline{
+    agent { label 'dev-server'}
+    
+    stages{
+        stage("Code clone"){
+            steps{
+                sh "whoami"
+            clone("https://github.com/LondheShubham153/django-notes-app.git","main")
+            }
+        }
+        stage("Code Build"){
+            steps{
+            dockerbuild("notes-app","latest")
+            }
+        }
+        stage("Push to DockerHub"){
+            steps{
+                dockerpush("dockerHubCreds","notes-app","latest")
+            }
+        }
+        stage("Deploy"){
+            steps{
+                deploy()
+            }
+        }
+        
+    }
+}
