@@ -14,11 +14,21 @@ function App() {
     <Router>
       <div className="container dark">
         <div className="app">
-        <Header />
-        <Routes>
-          <Route path='/' element={ <NotesListPage/> } />
-          <Route path='/note/:id' element={ <NotePage/> } />
-        </Routes>
+          {/* Display your name at the top */}
+          <h1 style={{
+            color: 'white',
+            textAlign: 'center',
+            padding: '10px 0',
+            fontSize: '28px'
+          }}>
+            Ashutosh Chaubey
+          </h1>
+
+          <Header />
+          <Routes>
+            <Route path='/' element={ <NotesListPage/> } />
+            <Route path='/note/:id' element={ <NotePage/> } />
+          </Routes>
         </div>
       </div>
     </Router>
